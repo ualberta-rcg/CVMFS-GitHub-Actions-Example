@@ -55,22 +55,23 @@ jobs:
           module load gcc/12.3
           gcc --version
 
-      - name: 🧪 Run GROMACS Simulation
+      - name: 🧪 Run GROMACS 2024.4 Simulation (CPU-only)
         run: |
-          echo "--- Sourcing the environment again ---"
+          echo "--- Sourcing the Compute Canada CVMFS environment ---"
           source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
 
-          echo "--- Purging existing modules to ensure a clean state ---"
-          module purge
+          echo "--- Purging previous modules ---"
+          module --force purge
 
-          echo "--- Loading GROMACS ---"
-          module load gromacs/2022.5
+          echo "--- Loading GROMACS 2024.4 with StdEnv/2023 ---"
+          module load StdEnv/2023 gcc/12.3 openmpi/4.1.5 gromacs/2024.4
 
-          echo "--- Downloading Demo Files ---"
-          wget -q https://raw.githubusercontent.com/gromacs/gromacs/release-2022.5/tutorials/mdrun_demo.tpr -O demo.tpr
+          echo "--- Downloading demo input (em.tpr) ---"
+          wget -q https://raw.githubusercontent.com/gromacs/gromacs/release-2024.4/tutorials/mdrun_demo.tpr -O em.tpr
 
-          echo "--- Running GROMACS with mdrun ---"
-          gmx mdrun -s demo.tpr -nt 2 -v
+          echo "--- Running GROMACS mdrun (2 threads) ---"
+          export OMP_NUM_THREADS=2
+          gmx mdrun -s em.tpr -nt $OMP_NUM_THREADS -v
 
-          echo "--- Listing Output Files ---"
+          echo "--- Listing output files ---"
           ls -lh
