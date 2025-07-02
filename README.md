@@ -1,1 +1,116 @@
-# CVMFS-GitHub-Actions-Example
+<img src="https://www.ualberta.ca/en/toolkit/media-library/homepage-assets/ua_logo_green_rgb.png" alt="University of Alberta Logo" width="50%" />
+
+# Use Compute Canada CVMFS Software Stack in GitHub Actions
+
+[![CI/CD](https://github.com/ualberta-rcg/github-actions-cvmfs-computecanada/actions/workflows/main.yml/badge.svg)](https://github.com/ualberta-rcg/github-actions-cvmfs-computecanada/actions/workflows/main.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+
+**Maintained by:** Rahim Khoja ([khoja1@ualberta.ca](mailto:khoja1@ualberta.ca))
+
+## 🧰 Description
+
+This GitHub Actions workflow demonstrates how to **use the Compute Canada / Digital Research Alliance CVMFS software stack** directly inside a GitHub-hosted runner.
+
+It mounts the official CVMFS repositories and enables you to load modules like `gcc`, `cmake`, or `python` — just like on a real HPC cluster.
+
+This is especially useful for:
+
+- Building software compatible with Compute Canada environments
+- Testing reproducible workflows before deploying on Alliance clusters
+- Accessing precompiled Alliance tools inside GitHub CI/CD
+
+## 🗂️ Files
+
+- `.github/workflows/main.yml`: The GitHub Actions workflow
+- This `README.md`
+
+## 🚀 How It Works
+
+### 📁 GitHub Actions Workflow
+
+```yaml
+name: Use Compute Canada CVMFS Software Stack
+
+on:
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+jobs:
+  build-with-alliance-stack:
+    name: Build with Alliance/Compute Canada Software
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛠️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📂 Mount Compute Canada CVMFS Repositories
+        uses: cvmfs-contrib/github-action-cvmfs@v2
+        with:
+          cvmfs_repositories: 'soft.computecanada.ca,containers.computecanada.ca'
+
+      - name: ✅ Verify Mount & Initialize Environment
+        run: |
+          echo "--- Verifying CVMFS mounts are available ---"
+          ls /cvmfs/
+          if [ ! -d "/cvmfs/soft.computecanada.ca" ]; then
+            echo "❌ ERROR: CVMFS repository 'soft.computecanada.ca' not found!"
+            exit 1
+          fi
+          echo "✅ CVMFS mounts look good."
+
+          echo "--- Sourcing the Alliance environment profile ---"
+          source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
+          module --version
+
+      - name: ⚙️ Use Software from CVMFS
+        run: |
+          source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
+          echo "--- Searching for available GCC modules ---"
+          module avail gcc
+
+          echo "--- Loading GCC 12.3 and checking version ---"
+          module load gcc/12.3
+          gcc --version
+````
+
+## ✅ Example Output
+
+```
+✅ CVMFS mounts look good.
+--- Sourcing the Alliance environment profile ---
+Modules based on Lmod version 8.5.6
+--- Searching for available GCC modules ---
+gcc/9.3  gcc/11.2  gcc/12.3
+--- Loading GCC 12.3 and checking version ---
+gcc (GCC) 12.3.0
+```
+
+## 🧪 Try It Yourself
+
+Fork this repo or copy the workflow into your own repo, then run it from the **Actions** tab in GitHub.
+
+No runners, secrets, or billing needed — everything runs on the free `ubuntu-latest` GitHub-hosted runner.
+
+## 🤝 Support
+
+If you're deploying this as part of a broader research platform or CI/CD workflow for research computing, feel free to reach out.
+
+Email **[khoja1@ualberta.ca](mailto:khoja1@ualberta.ca)** for U of A or Alliance-related questions.
+
+## 📜 License
+
+This project is licensed under the **MIT License**, meaning:
+
+* ✅ You can use, modify, and redistribute it freely
+* ✅ Use it in commercial or private projects
+* ✅ Include it in closed-source or public tools
+
+Just retain the copyright.
+
+**Full license text:** [MIT License](./LICENSE)
+
+## 🧠 About University of Alberta Research Computing
+
+The [Research Computing Group](https://www.ualberta.ca/information-services-and-technology/research-computing/index.html) supports research infrastructure, software workflows, and advanced computing services for U of A and Canadian researchers.
+
+We build scalable systems, enable reproducible science, and help accelerate discovery.
