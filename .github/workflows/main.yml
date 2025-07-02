@@ -1,4 +1,4 @@
-name: Use Compute Canada CVMFS Software Stack
+name: Examples of how to use Compute Canada CVMFS Software Stack with GitHub Actions
 
 on:
   workflow_dispatch: # Allows you to run this manually from the Actions tab
@@ -54,3 +54,23 @@ jobs:
           echo "--- Loading a specific GCC module and checking its version ---"
           module load gcc/12.3
           gcc --version
+
+      - name: 🧪 Run GROMACS Simulation
+        run: |
+          echo "--- Sourcing the environment again ---"
+          source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
+
+          echo "--- Purging existing modules to ensure a clean state ---"
+          module purge
+
+          echo "--- Loading GROMACS ---"
+          module load gromacs/2022.5
+
+          echo "--- Downloading Demo Files ---"
+          wget -q https://raw.githubusercontent.com/gromacs/gromacs/release-2022.5/tutorials/mdrun_demo.tpr -O demo.tpr
+
+          echo "--- Running GROMACS with mdrun ---"
+          gmx mdrun -s demo.tpr -nt 2 -v
+
+          echo "--- Listing Output Files ---"
+          ls -lh
