@@ -57,10 +57,10 @@ jobs:
 
       - name: 🧪 Run CP2K Simulation (water molecule)
         run: |
-          echo "--- Sourcing CVMFS environment ---"
+          echo "--- Sourcing Compute Canada CVMFS environment ---"
           source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
           module --force purge
-          module load StdEnv/2023 gcc/12.3 cp2k/2023.2
+          module load StdEnv/2020 gcc/9.3.0 cp2k/8.2
 
           echo "--- Creating water molecule input file ---"
           cat <<EOF > water.inp
