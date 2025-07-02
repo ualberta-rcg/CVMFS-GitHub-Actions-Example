@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 📂 Mount Compute Canada CVMFS Repositories
-        uses: cvmfs-contrib/github-action-cvmfs@v2
+        uses: cvmfs-contrib/github-action-cvmfs@v5
         with:
           cvmfs_repositories: 'soft.computecanada.ca,containers.computecanada.ca'
 
