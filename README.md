@@ -71,6 +71,63 @@ jobs:
           echo "--- Loading GCC 12.3 and checking version ---"
           module load gcc/12.3
           gcc --version
+
+      - name: 🧪 Run CP2K Simulation (water molecule)
+        run: |
+          echo "--- Avoiding Intel module auto-load & glibc error ---"
+          export LMOD_SYSTEM_NAME=generic
+          export LMOD_VERSION=8.5
+
+          echo "--- Sourcing Compute Canada CVMFS environment ---"
+          source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
+          module --force purge
+          module load StdEnv/2020 gcc/9.3.0 cp2k/8.2 openmpi/4.0.3 
+
+          echo "--- Creating water molecule input file ---"
+          cat <<EOF > water.inp
+          &GLOBAL
+            PROJECT water
+            RUN_TYPE ENERGY
+          &END GLOBAL
+          &FORCE_EVAL
+            METHOD QUICKSTEP
+            &DFT
+              BASIS_SET_FILE_NAME BASIS_MOLOPT
+              POTENTIAL_FILE_NAME GTH_POTENTIALS
+              &MGRID
+                CUTOFF 280
+              &END MGRID
+              &XC
+                &XC_FUNCTIONAL PBE
+                &END XC_FUNCTIONAL
+              &END XC
+            &END DFT
+            &SUBSYS
+              &CELL
+                ABC 10.0 10.0 10.0
+              &END CELL
+              &COORD
+                O 0.000 0.000 0.000
+                H 0.758 0.000 0.504
+                H -0.758 0.000 0.504
+              &END COORD
+              &KIND H
+                BASIS_SET DZVP-MOLOPT-SR-GTH
+                POTENTIAL GTH-PBE-q1
+              &END KIND
+              &KIND O
+                BASIS_SET DZVP-MOLOPT-SR-GTH
+                POTENTIAL GTH-PBE-q6
+              &END KIND
+            &END SUBSYS
+          &END FORCE_EVAL
+          EOF
+
+          echo "--- Running CP2K ---"
+          cp2k.psmp -i water.inp > water.out
+
+          echo "--- Printing final SCF energy ---"
+          grep "ENERGY|" water.out | tail -1
 ````
 
 ## ✅ Example Output
