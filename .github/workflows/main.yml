@@ -100,7 +100,7 @@ jobs:
               &END KIND
             &END SUBSYS
           &END FORCE_EVAL
-EOF
+          EOF
 
           echo "--- Running CP2K ---"
           cp2k.psmp -i water.inp > water.out
