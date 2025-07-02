@@ -134,12 +134,32 @@ jobs:
 
 ```
 ✅ CVMFS mounts look good.
---- Sourcing the Alliance environment profile ---
-Modules based on Lmod version 8.5.6
+--- Sourcing the Alliance/Compute Canada environment profile ---
+Modules based on Lua: Version 8.7.47 2024-07-22 10:04 -04:00
+
 --- Searching for available GCC modules ---
-gcc/9.3  gcc/11.2  gcc/12.3
---- Loading GCC 12.3 and checking version ---
-gcc (GCC) 12.3.0
+-------------------------------- Core Modules ---------------------------------
+   gcc/12.3 (L,t,D)    gcc/13.3 (t)
+
+  Where:
+   D:  Default Module
+   L:  Module is loaded
+   t:  Tools for development
+
+Use "module spider" or "module keyword" to find additional modules.
+
+--- Loading a specific GCC module and checking its version ---
+gcc (Gentoo 12.3.1_p20230526 p2) 12.3.1 20230526
+
+--- Avoiding Intel module auto-load & glibc error ---
+--- Sourcing Compute Canada CVMFS environment ---
+Lmod is automatically replacing "intel/2020.1.217" with "gcc/9.3.0"
+Lmod is automatically replacing "boost/1.72.0" with "boost-mpi/1.72.0"
+
+--- Creating water molecule input file ---
+--- Running CP2K ---
+--- Printing final SCF energy ---
+ ENERGY| Total FORCE_EVAL ( QS ) energy [a.u.]:              -17.212010403238466
 ```
 
 ## 🧪 Try It Yourself
