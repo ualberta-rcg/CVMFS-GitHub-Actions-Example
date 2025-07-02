@@ -57,6 +57,10 @@ jobs:
 
       - name: 🧪 Run CP2K Simulation (water molecule)
         run: |
+          echo "--- Avoiding Intel module auto-load & glibc error ---"
+          export LMOD_SYSTEM_NAME=generic
+          export LMOD_VERSION=8.5
+
           echo "--- Sourcing Compute Canada CVMFS environment ---"
           source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
           module --force purge
