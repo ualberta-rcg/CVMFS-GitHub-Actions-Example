@@ -15,7 +15,7 @@ jobs:
       # 1. This is the key step that sets up CVMFS
       #    We specify the repository names for the Digital Research Alliance of Canada.
       - name: 📂 Mount Compute Canada CVMFS Repositories
-        uses: cvmfs-contrib/github-action-cvmfs@v2
+        uses: cvmfs-contrib/github-action-cvmfs@v5
         with:
           cvmfs_repositories: 'soft.computecanada.ca,containers.computecanada.ca'
 
