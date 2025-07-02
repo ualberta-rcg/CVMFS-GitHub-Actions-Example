@@ -2,7 +2,7 @@
 
 # Use Compute Canada CVMFS Software Stack in GitHub Actions
 
-[![CI/CD](https://github.com/ualberta-rcg/github-actions-cvmfs-computecanada/actions/workflows/main.yml/badge.svg)](https://github.com/ualberta-rcg/github-actions-cvmfs-computecanada/actions/workflows/main.yml)
+[![CI/CD](https://github.com/ualberta-rcg/CVMFS-GitHub-Actions-Example/actions/workflows/main.yml/badge.svg)](https://github.com/ualberta-rcg/CVMFS-GitHub-Actions-Example/actions/workflows/main.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 **Maintained by:** Rahim Khoja ([khoja1@ualberta.ca](mailto:khoja1@ualberta.ca))
